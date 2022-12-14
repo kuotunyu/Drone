@@ -15,12 +15,10 @@ Private Leaderboard Hmean_TIOU : 0.73922
 ## CV Task:物件偵測  
 將無人機視角的圖片做物件偵測，框出 "小型車"、"大型車"、"人"、"機車"這幾個類別  
 input:  
-![圖片參考名稱](https://upload.cc/i1/2022/12/13/FwcZ4g.png)
-
+<img src="https://upload.cc/i1/2022/12/13/FwcZ4g.png" width="700" alt="input原圖"/>
 
 output:  
-![圖片參考名稱](https://upload.cc/i1/2022/12/13/0K7CAD.png)
-
+<img src="https://upload.cc/i1/2022/12/13/0K7CAD.png" width="700" alt="output預測圖片"/>
 
 ## Dataset:
 
@@ -51,7 +49,7 @@ pip install -r requirements.txt
 左:原本的Raw data label寫法為 類別idx,左上x, 左上y, 寬度W, 高度H  
 右: 希望轉成的Yolo標準格式寫法為 類別idx 中心點x 中心點y 寬度W 高度H  
 =>除了類別idx之外的數字都要經過 normalization，把分隔符號從逗號變成空格
-![圖片參考名稱](https://upload.cc/i1/2022/12/14/yQL2YG.png)
+<img src="https://upload.cc/i1/2022/12/14/yQL2YG.png" width="600" alt="Yolo格式前後"/>
 
 執行之前先確認:  
     img資料夾:所有的圖片(做normalization需要得知原圖的寬、高)  
@@ -61,8 +59,7 @@ pip install -r requirements.txt
 python to_yolo.py
 ```
 為了方便起見，先把圖片和label整理成這種架構  
-![12134.png](https://upload.cc/i1/2022/12/14/RQYVoy.png)
-
+<img src="https://upload.cc/i1/2022/12/14/RQYVoy.png" width="400" alt="資料整理"/>
 
 ## 取得Anchor box尺寸
 目標: 取得自己的Dataset的Anchor box尺寸  
@@ -92,8 +89,9 @@ path : 有一堆XML檔所在路徑
 python myanchors.py
 ```
 會印出分群結果  
-![12135.png](https://upload.cc/i1/2022/12/13/WXAJCG.png)
-![12136.png](https://upload.cc/i1/2022/12/13/Ig8jhb.jpg)
+<img src="https://upload.cc/i1/2022/12/13/WXAJCG.png" width="350" alt="終端機畫面"/>  
+<img src="https://upload.cc/i1/2022/12/13/Ig8jhb.jpg" width="500" alt="分群結果"/>
+
   
 還會在當前路徑下生成yolo_anchors.txt 裡面是 k組Anchor box的尺寸，每次分群的結果可能稍微不一樣 可以試試看多執行幾次比對結果。
   
@@ -128,9 +126,8 @@ VisDrone dataset修改Anchor box
 
 Reference :  [yolov7-w6的yaml](https://github.com/WongKinYiu/yolov7/blob/main/cfg/training/yolov7-w6.yaml)
   
-![12137.png](https://upload.cc/i1/2022/12/13/MiS6pP.png)
-![12138.png](https://upload.cc/i1/2022/12/13/7138iO.png)  
-
+<img src="https://upload.cc/i1/2022/12/13/MiS6pP.png" width="1000" alt="模型架構"/>
+<img src="https://upload.cc/i1/2022/12/13/7138iO.png" width="900" alt="補充"/>
 
 ## 詳細訓練流程:
 #### step1: 
@@ -153,7 +150,7 @@ Reference :  [yolov7-w6的yaml](https://github.com/WongKinYiu/yolov7/blob/main/c
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1QIcEhmJzFcMCfSqRyzZKm5JLr4Dqz0qN?usp=sharing)
 ![121311.png](https://upload.cc/i1/2022/12/13/TBWzvS.png)
 ![121312.png](https://upload.cc/i1/2022/12/13/pJs9X0.png)  
-![121313.png](https://upload.cc/i1/2022/12/13/VNpH2T.png) 
+<img src="https://upload.cc/i1/2022/12/13/VNpH2T.png" width="600" alt="分類result"/>
 
 
 ## Reference
