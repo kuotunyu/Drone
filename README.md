@@ -48,13 +48,13 @@ pip install -r requirements.txt
    ---
 ### Yolo格式 :  
 把Raw data的label整理成Yolo格式  
-左:原本的Raw data label所示寫法為 類別idx,左上x, 左上y, 寬度W, 高度H  
-右: 希望轉成Yolo標準格式寫法為 類別idx 中心點x 中心點y 寬度W 高度H  
+左:原本的Raw data label寫法為 類別idx,左上x, 左上y, 寬度W, 高度H  
+右: 希望轉成的Yolo標準格式寫法為 類別idx 中心點x 中心點y 寬度W 高度H  
 =>除了類別idx之外的數字都要經過 normalization，把分隔符號從逗號變成空格
 ![圖片參考名稱](https://upload.cc/i1/2022/12/14/yQL2YG.png)
 
 執行之前先確認:  
-    img資料夾:所有的圖片  
+    img資料夾:所有的圖片(做normalization需要得知原圖的寬、高)  
     label資料夾:所有圖片對應的txt檔(比賽官方給的格式)  
     new_label資料夾 : 空的，準備接轉檔後yolo格式的一堆txt 
 ```
@@ -94,11 +94,11 @@ python myanchors.py
 會印出分群結果  
 ![12135.png](https://upload.cc/i1/2022/12/13/WXAJCG.png)
 ![12136.png](https://upload.cc/i1/2022/12/13/Ig8jhb.jpg)  
-還會在當前路徑下生成yolo_anchors.txt 裡面是 k組Anchor box的尺寸，每次分群的結果可能稍微不一樣 可以試試看多執行幾次比對結果
+還會在當前路徑下生成yolo_anchors.txt 裡面是 k組Anchor box的尺寸，每次分群的結果可能稍微不一樣 可以試試看多執行幾次比對結果。
   
-這次比賽我總共使用2個資料集，分別是比賽官方提供的無人機dataset和我另外找的VisDrone dataset，我這次使用的是yolov7-w6來訓練，其預設的Anchor box和我用到的2個Dataset求得的Anchor box尺寸相差很大，特別是大物件的Anchor box，可能是無人機視角的關係 不太會有機會出現某物件在圖片中涵蓋大範圍的情形，因此在訓練時我都會修改Anchor box尺寸 將其設定為我針對自己的Dataset用k-means所求得的值  
+這次比賽我總共使用2個資料集，分別是比賽官方提供的無人機dataset和我另外找的VisDrone dataset，我這次使用的是yolov7-w6來訓練，其預設的Anchor box和我用到的2個Dataset求得的Anchor box尺寸相差很大，特別是大物件的Anchor box，可能是無人機視角的關係 不太會有機會出現某物件在圖片中涵蓋大範圍的情形，因此在訓練時我都會修改Anchor box尺寸 將其設定為我針對自己的Dataset用k-means所求得的值。  
 
-最後在正式訓練模型時要去 yolov7/cfg/training 這個資料夾底下 修改  XX.yaml 檔，把作者訓練的dataset求得的Anchor box尺寸，換成上面得到的針對自己的dataset的Anchor box尺寸。
+最後在正式訓練模型時要去 yolov7/cfg/training 這個資料夾底下 修改  XX.yaml 檔，把作者訓練的dataset求得的Anchor box尺寸，換成上面得到的針對自己的dataset的Anchor box尺寸。  
 **注意圖片大小要和生成的Anchor box對應**
 
 無人機dataset修改Anchor box  
@@ -134,19 +134,19 @@ Head: YOLOR
 ### 詳細訓練流程:
 #### step1: 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1-RwWhtqdBMtCI226RUF_BpXLFYLewwYt?usp=sharing)  
- 在VisDrone dataset訓練80個epoch 希望可以學習到無人機視角做特徵提取 
+ 在VisDrone dataset訓練80個epoch 希望可以學習到無人機視角做特徵提取。 
 
 
 #### step2: 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1m2ie2S5gNybBC9RhVMmHyge8_XYzmlCS?usp=sharing)  
 ![12139.png](https://upload.cc/i1/2022/12/13/QqSFbT.png)
 ![121310.png](https://upload.cc/i1/2022/12/13/znDfET.png)  
- 用比賽的Dataset訓練80個epoch 發現mAP表現不太好 特別是 ’人’ 和 ’機車’ 這兩個類別的預測情形不太好嚴重拉低了mAP
+ 用比賽的Dataset訓練80個epoch 發現mAP表現不太好 特別是 ’人’ 和 ’機車’ 這兩個類別的預測情形不太好嚴重拉低了mAP。
 
 
 #### step3: 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1JVfrnnpC6W3X3Yu1a53eN0xMh3OwsEZN?usp=sharing)  
-把VisDrone dataset的類別做一些修改 刪除一些不相關的類別並把類別做一些濃縮變成跟比賽的Dataset的類別一樣，像是VisDrone dataset有細分走在路上的行人和坐著的人，有細分普通的小轎車和休旅車，我認為細分這些對於在訓練比賽的Dataset可能有反效果，所以就把VisDrone dataset的類別給暴力濃縮了
+把VisDrone dataset的類別做一些修改 刪除一些不相關的類別並把類別做一些濃縮變成跟比賽的Dataset的類別一樣，像是VisDrone dataset有細分走在路上的行人和坐著的人，有細分普通的小轎車和休旅車，我認為細分這些對於在訓練比賽的Dataset可能有反效果，所以就把VisDrone dataset的類別給暴力濃縮了。
 
 #### step4&Output: 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1QIcEhmJzFcMCfSqRyzZKm5JLr4Dqz0qN?usp=sharing)
