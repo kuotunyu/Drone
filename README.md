@@ -48,9 +48,10 @@ pip install -r requirements.txt
    ---
 ### Yolo格式 :  
 把Raw data的label整理成Yolo格式  
-左:原本的Raw data label所示寫法為 類別,左上x, 左上y, 寬度W, 高度H  
-右: 希望轉成Yolo標準格式寫法為 類別idx 中心點x 中心點y 寬度W 高度H，除了類別idx之外的數字都要經過 normalization
-![圖片參考名稱](https://upload.cc/i1/2022/12/13/V6azWh.png)
+左:原本的Raw data label所示寫法為 類別idx,左上x, 左上y, 寬度W, 高度H  
+右: 希望轉成Yolo標準格式寫法為 類別idx 中心點x 中心點y 寬度W 高度H  
+=>除了類別idx之外的數字都要經過 normalization，把分隔符號從逗號變成空格
+![圖片參考名稱](https://upload.cc/i1/2022/12/14/yQL2YG.png)
 
 執行之前先確認:  
     img資料夾:所有的圖片  
@@ -60,7 +61,7 @@ pip install -r requirements.txt
 python to_yolo.py
 ```
 為了方便起見，先把圖片和label整理成這種架構  
-![12134.png](https://upload.cc/i1/2022/12/13/tEDYM3.png)
+![12134.png](https://upload.cc/i1/2022/12/14/RQYVoy.png)
 
 ---
 ### 取得Anchor box尺寸
