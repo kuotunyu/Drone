@@ -125,9 +125,8 @@ VisDrone dataset修改Anchor box
 
 
 ## 比賽使用模型架構
-Backbone: ELAN, E-ELAN  
-Neck: CSPSPP+(ELAN, E-ELAN)PAN  
-Head: YOLOR  
+
+Reference :  [yolov7-w6的yaml](https://github.com/WongKinYiu/yolov7/blob/main/cfg/training/yolov7-w6.yaml)
   
 ![12137.png](https://upload.cc/i1/2022/12/13/MiS6pP.png)
 ![12138.png](https://upload.cc/i1/2022/12/13/7138iO.png)  
