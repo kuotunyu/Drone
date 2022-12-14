@@ -5,14 +5,14 @@
 競賽網址：https://tbrain.trendmicro.com.tw/Competitions/Details/25
 
 
-### 參賽成績
+## 參賽成績
 Team:TEAM_2724  
 Member: Tun-yu  
 Rank: **18th** / 236 Teams   
 Private Leaderboard Hmean_TIOU : 0.73922
 
----
-### CV Task:物件偵測  
+
+## CV Task:物件偵測  
 將無人機視角的圖片做物件偵測，框出 "小型車"、"大型車"、"人"、"機車"這幾個類別  
 input:  
 ![圖片參考名稱](https://upload.cc/i1/2022/12/13/FwcZ4g.png)
@@ -21,13 +21,13 @@ input:
 output:  
 ![圖片參考名稱](https://upload.cc/i1/2022/12/13/0K7CAD.png)
 
----
-### Dataset:
+
+## Dataset:
 
 1.   [比賽官方提供的 Dataset](https://tbrain.trendmicro.com.tw/Competitions/Details/25)
 2.   [外部資源-VisDrone Dataset](https://github.com/VisDrone/VisDrone-Dataset)
----
-### 訓練流程:
+  
+## 訓練流程:
 
  step1: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1-RwWhtqdBMtCI226RUF_BpXLFYLewwYt?usp=sharing)
 
@@ -37,16 +37,16 @@ output:
 
    step4&Output: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1QIcEhmJzFcMCfSqRyzZKm5JLr4Dqz0qN?usp=sharing)
 
----
-### 安裝環境   
+
+## 安裝環境   
 [requirements](https://github.com/WongKinYiu/yolov7/blob/main/requirements.txt)
 
 ```
 pip install -r requirements.txt
 ```
 
-   ---
-### Yolo格式 :  
+
+## Yolo格式 :  
 把Raw data的label整理成Yolo格式  
 左:原本的Raw data label寫法為 類別idx,左上x, 左上y, 寬度W, 高度H  
 右: 希望轉成的Yolo標準格式寫法為 類別idx 中心點x 中心點y 寬度W 高度H  
@@ -63,8 +63,8 @@ python to_yolo.py
 為了方便起見，先把圖片和label整理成這種架構  
 ![12134.png](https://upload.cc/i1/2022/12/14/RQYVoy.png)
 
----
-### 取得Anchor box尺寸
+
+## 取得Anchor box尺寸
 目標: 取得自己的Dataset的Anchor box尺寸  
 注意: 此時txt已經是Yolo格式  
 動機: 在這次比賽中希望求出屬於本次比賽Dataset的Anchor box，為了方便起見，要把label轉成XML格式
@@ -82,7 +82,7 @@ python mytxt2xml.py
 
 
 2: 用分群方法取得自己的Dataset的Anchor box尺寸  
-目前已經得到所有Dataset圖片 label的XML檔，這步會用k-means的方法求出K個群中心點，得到一組針對此Dataset的Anchor box，提供之後訓練Yolo模型時使用。  
+目前已經得到所有Dataset圖片 label的XML檔，這步會用k-means的方法求出k個群中心點，得到一組針對此Dataset的Anchor box，提供之後訓練Yolo模型時使用。  
 
 ##### 注意參數    
 input_shape : 圖片大小，最好跟之後訓練、推論的大小一致  
@@ -93,13 +93,14 @@ python myanchors.py
 ```
 會印出分群結果  
 ![12135.png](https://upload.cc/i1/2022/12/13/WXAJCG.png)
-![12136.png](https://upload.cc/i1/2022/12/13/Ig8jhb.jpg)  
+![12136.png](https://upload.cc/i1/2022/12/13/Ig8jhb.jpg)
+  
 還會在當前路徑下生成yolo_anchors.txt 裡面是 k組Anchor box的尺寸，每次分群的結果可能稍微不一樣 可以試試看多執行幾次比對結果。
   
-這次比賽我總共使用2個資料集，分別是比賽官方提供的無人機dataset和我另外找的VisDrone dataset，我這次使用的是yolov7-w6來訓練，其預設的Anchor box和我用到的2個Dataset求得的Anchor box尺寸相差很大，特別是大物件的Anchor box，可能是無人機視角的關係 不太會有機會出現某物件在圖片中涵蓋大範圍的情形，因此在訓練時我都會修改Anchor box尺寸 將其設定為我針對自己的Dataset用k-means所求得的值。  
+這次比賽我總共使用2個dataset，分別是比賽官方提供的無人機dataset和我另外找的VisDrone dataset，我這次使用的是yolov7-w6來訓練，其預設的Anchor box和我用到的2個Dataset求得的Anchor box尺寸相差很大，特別是大物件的Anchor box，可能是無人機視角的關係 不太會有機會出現某物件在圖片中涵蓋大範圍的情形，因此在訓練時我都會修改Anchor box尺寸 將其設定為我針對自己的Dataset用k-means所求得的值。  
 
-最後在正式訓練模型時要去 yolov7/cfg/training 這個資料夾底下 修改  XX.yaml 檔，把作者訓練的dataset求得的Anchor box尺寸，換成上面得到的針對自己的dataset的Anchor box尺寸。  
-**注意圖片大小要和生成的Anchor box對應**
+最後在正式訓練模型前要先去 yolov7/cfg/training 這個資料夾底下 修改  XX.yaml 檔，把作者訓練的dataset求得的Anchor box尺寸，換成上面得到的針對自己的dataset的Anchor box尺寸。  
+**注意圖片大小(Input size)要和生成的Anchor box對應**
 
 無人機dataset修改Anchor box  
 `!sed -n -e 8p -e 9p -e 10p -e 11p cfg/training/yolov7-w6.yaml`
@@ -122,16 +123,17 @@ VisDrone dataset修改Anchor box
 ```
 `!sed -n -e 8p -e 9p -e 10p -e 11p cfg/training/yolov7-w6.yaml`
 
----
-### 比賽使用模型架構
+
+## 比賽使用模型架構
 Backbone: ELAN, E-ELAN  
 Neck: CSPSPP+(ELAN, E-ELAN)PAN  
 Head: YOLOR  
+  
 ![12137.png](https://upload.cc/i1/2022/12/13/MiS6pP.png)
 ![12138.png](https://upload.cc/i1/2022/12/13/7138iO.png)  
 
----
-### 詳細訓練流程:
+
+## 詳細訓練流程:
 #### step1: 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1-RwWhtqdBMtCI226RUF_BpXLFYLewwYt?usp=sharing)  
  在VisDrone dataset訓練80個epoch 希望可以學習到無人機視角做特徵提取。 
@@ -154,6 +156,6 @@ Head: YOLOR
 ![121312.png](https://upload.cc/i1/2022/12/13/pJs9X0.png)  
 ![121313.png](https://upload.cc/i1/2022/12/13/VNpH2T.png) 
 
----
-### Reference
+
+## Reference
 https://github.com/WongKinYiu/yolov7
