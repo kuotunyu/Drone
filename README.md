@@ -15,10 +15,10 @@ Private Leaderboard Hmean_TIOU : 0.73922
 ## CV Task:物件偵測  
 將無人機視角的圖片做物件偵測，框出 "小型車"、"大型車"、"人"、"機車"這幾個類別  
 input:  
-<img src="https://upload.cc/i1/2022/12/13/FwcZ4g.png" width="700" alt="input原圖"/>
+<img src="./figure/input_img.png" width="700" alt="input原圖"/>
 
 output:  
-<img src="https://upload.cc/i1/2022/12/13/0K7CAD.png" width="700" alt="output預測圖片"/>
+<img src="./figure/output_img.png" width="700" alt="output預測圖片"/>
 
 ## Dataset:
 
@@ -49,7 +49,7 @@ pip install -r requirements.txt
 左:原本的Raw data label寫法為 類別idx,左上x, 左上y, 寬度W, 高度H  
 右: 希望轉成的Yolo標準格式寫法為 類別idx 中心點x 中心點y 寬度W 高度H  
 =>除了類別idx之外的數字都要經過 normalization，把分隔符號從逗號變成空格
-<img src="https://upload.cc/i1/2022/12/14/yQL2YG.png" width="600" alt="Yolo格式前後"/>
+<img src="./figure/Yolo_format.png" width="600" alt="Yolo格式前後"/>
 
 執行之前先確認:  
     img資料夾:所有的圖片(做normalization需要得知原圖的寬、高)  
@@ -59,7 +59,7 @@ pip install -r requirements.txt
 python to_yolo.py
 ```
 為了方便起見，先把圖片和label整理成這種架構  
-<img src="https://upload.cc/i1/2022/12/14/RQYVoy.png" width="400" alt="資料整理"/>
+<img src="./figure/01.png" width="400" alt="資料整理"/>
 
 ## 取得Anchor box尺寸
 目標: 取得自己的Dataset的Anchor box尺寸  
@@ -89,8 +89,8 @@ path : 有一堆XML檔所在路徑
 python myanchors.py
 ```
 會印出分群結果  
-<img src="https://upload.cc/i1/2022/12/13/WXAJCG.png" width="350" alt="終端機畫面"/>  
-<img src="https://upload.cc/i1/2022/12/13/Ig8jhb.jpg" width="500" alt="分群結果"/>
+<img src="./figure/anchor1.png" width="350" alt="終端機畫面"/>  
+<img src="./figure/anchor2.jpg " width="500" alt="分群結果"/>
 
   
 還會在當前路徑下生成yolo_anchors.txt 裡面是 k組Anchor box的尺寸，每次分群的結果可能稍微不一樣 可以試試看多執行幾次比對結果。
@@ -126,8 +126,8 @@ VisDrone dataset修改Anchor box
 
 Reference :  [yolov7-w6的yaml](https://github.com/WongKinYiu/yolov7/blob/main/cfg/training/yolov7-w6.yaml)
   
-<img src="https://upload.cc/i1/2022/12/13/MiS6pP.png" width="1000" alt="模型架構"/>
-<img src="https://upload.cc/i1/2022/12/13/7138iO.png" width="900" alt="補充"/>
+<img src="./figure/w6_1.png" width="1000" alt="模型架構"/>
+<img src="./figure/w6_2.png " width="900" alt="補充"/>
 
 ## 詳細訓練流程:
 #### step1: 
@@ -137,8 +137,8 @@ Reference :  [yolov7-w6的yaml](https://github.com/WongKinYiu/yolov7/blob/main/c
 
 #### step2: 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1m2ie2S5gNybBC9RhVMmHyge8_XYzmlCS?usp=sharing)  
-![12139.png](https://upload.cc/i1/2022/12/13/QqSFbT.png)
-![121310.png](https://upload.cc/i1/2022/12/13/znDfET.png)  
+<img src="./figure/step2_1.png" width="1000" alt="step2 loss"/>
+<img src="./figure/step2_2.png" width="1000" alt="表現"/> 
  用比賽的Dataset訓練80個epoch 發現mAP表現不太好 特別是 ’人’ 和 ’機車’ 這兩個類別的預測情形不太好嚴重拉低了mAP。
 
 
@@ -148,9 +148,31 @@ Reference :  [yolov7-w6的yaml](https://github.com/WongKinYiu/yolov7/blob/main/c
 
 #### step4&Output: 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1QIcEhmJzFcMCfSqRyzZKm5JLr4Dqz0qN?usp=sharing)
-![121311.png](https://upload.cc/i1/2022/12/13/TBWzvS.png)
-![121312.png](https://upload.cc/i1/2022/12/13/pJs9X0.png)  
-<img src="https://upload.cc/i1/2022/12/13/VNpH2T.png" width="600" alt="分類result"/>
+<img src="./figure/step4_1.png" width="1000" alt="表現"/>
+<img src="./figure/step4_2.png" width="1000" alt="step2 loss"/>
+<img src="./figure/step4_3.png" width="600" alt="cofusion matrix"/>
+
+## Inference On video:
+由於找不到比賽dataset同一視角的無人機視角影片，所以使用網路上免費的高空俯視短片來Demo。
+
+<details><summary> <b>Expand</b> </summary>
+
+```
+python detect.py --weights 'best.pt' \
+--img-size 1280 \
+--conf-thres 0.4 \
+--iou-thres 0.65 \
+--device 0 \
+--source 'demo.mp4'
+```
+</details>
+Origin:  
+<img src="https://github.com/kuotunyu/Drone/releases/download/mydemo/demo.gif" width="700" alt="input原圖"/>
+  
+Inference:  
+<img src="https://github.com/kuotunyu/Drone/releases/download/mydemo/output.gif" width="700" alt="input原圖"/>
+
+
 
 
 ## Reference
