@@ -20,12 +20,12 @@ input:
 output:  
 <img src="./figure/output_img.png" width="700" alt="output預測圖片"/>
 
-## Dataset:
+## Dataset
 
 1.   [比賽官方提供的 Dataset](https://tbrain.trendmicro.com.tw/Competitions/Details/25)
 2.   [外部資源-VisDrone Dataset](https://github.com/VisDrone/VisDrone-Dataset)
   
-## 訓練流程:
+## 訓練流程
 
  step1: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1-RwWhtqdBMtCI226RUF_BpXLFYLewwYt?usp=sharing)
 
@@ -44,7 +44,7 @@ pip install -r requirements.txt
 ```
 
 
-## Yolo格式 :  
+## Yolo格式
 把Raw data的label整理成Yolo格式  
 左:原本的Raw data label寫法為 類別idx,左上x, 左上y, 寬度W, 高度H  
 右: 希望轉成的Yolo標準格式寫法為 類別idx 中心點x 中心點y 寬度W 高度H  
@@ -129,7 +129,7 @@ Reference :  [yolov7-w6的yaml](https://github.com/WongKinYiu/yolov7/blob/main/c
 <img src="./figure/w6_1.png" width="1000" alt="模型架構"/>
 <img src="./figure/w6_2.png " width="900" alt="補充"/>
 
-## 詳細訓練流程:
+## 詳細訓練流程
 #### step1: 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1-RwWhtqdBMtCI226RUF_BpXLFYLewwYt?usp=sharing)  
  在VisDrone dataset訓練80個epoch 希望可以學習到無人機視角做特徵提取。 
@@ -152,7 +152,7 @@ Reference :  [yolov7-w6的yaml](https://github.com/WongKinYiu/yolov7/blob/main/c
 <img src="./figure/step4_2.png" width="1000" alt="step2 loss"/>
 <img src="./figure/step4_3.png" width="600" alt="cofusion matrix"/>
 
-## Inference On video:
+## Inference On video
 由於找不到比賽dataset同一視角的無人機視角影片，所以使用[coverr網站](https://coverr.co/)免費的高空俯視短片來Demo。
 
 
