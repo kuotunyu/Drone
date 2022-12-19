@@ -153,7 +153,8 @@ Reference :  [yolov7-w6的yaml](https://github.com/WongKinYiu/yolov7/blob/main/c
 <img src="./figure/step4_3.png" width="600" alt="cofusion matrix"/>
 
 ## Inference On video:
-由於找不到比賽dataset同一視角的無人機視角影片，所以使用網路上免費的高空俯視短片來Demo。
+由於找不到比賽dataset同一視角的無人機視角影片，所以使用[coverr網站](https://coverr.co/)免費的高空俯視短片來Demo。
+
 
 <details><summary> <b>Expand</b> </summary>
 
