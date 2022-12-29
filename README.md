@@ -1,7 +1,5 @@
 # Drone
-1213
 
----
 競賽網址：https://tbrain.trendmicro.com.tw/Competitions/Details/25
 
 
@@ -13,7 +11,7 @@ Private Leaderboard Hmean_TIOU : 0.73922
 
 
 ## CV Task:物件偵測  
-將無人機視角的圖片做物件偵測，框出 "小型車"、"大型車"、"人"、"機車"這幾個類別  
+將無人機視角的圖片做物件偵測，框出 「小型車」、「大型車」、「人」、「機車」這幾個類別  
 input:  
 <img src="./figure/input_img.png" width="700" alt="input原圖"/>
 
@@ -46,19 +44,20 @@ pip install -r requirements.txt
 
 ## Yolo格式
 把Raw data的label整理成Yolo格式  
-左:原本的Raw data label寫法為 類別idx,左上x, 左上y, 寬度W, 高度H  
+左: 原本的Raw data label寫法為 類別idx,左上x, 左上y, 寬度W, 高度H  
 右: 希望轉成的Yolo標準格式寫法為 類別idx 中心點x 中心點y 寬度W 高度H  
-=>除了類別idx之外的數字都要經過 normalization，把分隔符號從逗號變成空格
+=> 除了類別idx之外的數字都要經過 normalization，以及把分隔符號從逗號變成空格
 <img src="./figure/Yolo_format.png" width="600" alt="Yolo格式前後"/>
 
-執行之前先確認:  
-    img資料夾:所有的圖片(做normalization需要得知原圖的寬、高)  
-    label資料夾:所有圖片對應的txt檔(比賽官方給的格式)  
-    new_label資料夾 : 空的，準備接轉檔後yolo格式的一堆txt 
+執行之前先確認:
+img資料夾: 所有的圖片(做normalization需要得知原圖的寬、高)  
+label資料夾: 所有圖片對應的txt檔(比賽官方給的格式)  
+new_label資料夾 : 目前是空的資料夾，準備接轉檔後yolo格式的一堆txt 
+    
 ```
 python to_yolo.py
 ```
-為了方便起見，先把圖片和label整理成這種架構  
+為了方便起見，先把圖片和label整理成這種架構。    
 <img src="./figure/001.png" width="400" alt="資料整理"/>
 
 ## 取得Anchor box尺寸
@@ -66,7 +65,7 @@ python to_yolo.py
 注意: 此時txt已經是Yolo格式  
 動機: 在這次比賽中希望求出屬於本次比賽Dataset的Anchor box，為了方便起見，要把label轉成XML格式
 
-1: 取得XML格式的label
+第1步: 取得XML格式的label
 由於目前只有TXT檔(Yolo格式)的label，為了等一下方便起見這邊要把TXT檔轉成XML檔  
 
 ##### 注意參數 
@@ -78,7 +77,7 @@ python mytxt2xml.py
 執行完會一張一張慢慢跑，如果太快的話很可能是路徑不對或副檔名指定錯，最後如果順利的話會生成對應的XML檔
 
 
-2: 用分群方法取得自己的Dataset的Anchor box尺寸  
+第2步: 用分群方法取得自己的Dataset的Anchor box尺寸  
 目前已經得到所有Dataset圖片 label的XML檔，這步會用k-means的方法求出k個群中心點，得到一組針對此Dataset的Anchor box，提供之後訓練Yolo模型時使用。  
 
 ##### 注意參數    
