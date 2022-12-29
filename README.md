@@ -59,7 +59,7 @@ pip install -r requirements.txt
 python to_yolo.py
 ```
 為了方便起見，先把圖片和label整理成這種架構  
-<img src="./figure/01.png" width="410" alt="資料整理"/>
+<img src="./figure/001.png" width="400" alt="資料整理"/>
 
 ## 取得Anchor box尺寸
 目標: 取得自己的Dataset的Anchor box尺寸  
